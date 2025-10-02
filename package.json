@@ -1,19 +1,17 @@
 {
-  "name": "mi-ecommerce",
+  "name": "ecommerce-server",
   "version": "1.0.0",
-  "private": true,
+  "description": "API for products and carts - Delivery 1",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
-    "firebase": "^9.22.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.1"
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "nodemon": "^2.0.22"
   }
 }

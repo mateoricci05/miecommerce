@@ -1,0 +1,9 @@
+{
+  "info": {
+    "name": "Entrega1 API Collection",
+    "_postman_id": "12345678-aaaa-bbbb-cccc-1234567890ab",
+    "description": "Colecci\u00f3n de pruebas para la API de Products y Carts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": []
+}
