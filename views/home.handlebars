@@ -1,0 +1,11 @@
+<h1>Home — Productos</h1>
+<p><a href="/realtimeProducts">Ir a RealTimeProducts</a></p>
+<ul>
+  {{#each products}}
+    <li>
+      <strong>{{this.title}}</strong> — ${{this.price}} — stock: {{this.stock}} 
+      {{#if this.thumbnail}}<br/><img src="{{this.thumbnail}}" alt="{{this.title}}" width="120"/>{{/if}}
+      <br/>id: {{this.id}}
+    </li>
+  {{/each}}
+</ul>
