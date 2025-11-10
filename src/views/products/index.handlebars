@@ -1,0 +1,33 @@
+<h2>Productos</h2>
+
+<form method="get" action="/products">
+  <label>Category / Query: <input name="query" value="{{data.query}}"/></label>
+  <label>Limit: <input name="limit" value="{{data.pageSize}}" /></label>
+  <label>Sort: <select name="sort">
+    <option value="">--</option>
+    <option value="asc">Precio asc</option>
+    <option value="desc">Precio desc</option>
+  </select></label>
+  <button type="submit">Filtrar</button>
+</form>
+
+<ul>
+  {{#each data.payload}}
+    <li>
+      <strong>{{this.title}}</strong> - ${{this.price}} - {{this.category}} - Stock: {{this.stock}}
+      <div>
+        <a href="/products/{{this._id}}">Ver</a>
+        <form style="display:inline" method="post" action="/api/carts/{{../data.cartId}}/products/{{this._id}}?_method=PUT">
+          <input type="hidden" name="quantity" value="1"/>
+          <button type="submit">Agregar al carrito</button>
+        </form>
+      </div>
+    </li>
+  {{/each}}
+</ul>
+
+<div>
+  <p>Página {{data.page}} / {{data.totalPages}}</p>
+  {{#if data.hasPrevPage}}<a href="{{data.prevLink}}">Anterior</a>{{/if}}
+  {{#if data.hasNextPage}}<a href="{{data.nextLink}}">Siguiente</a>{{/if}}
+</div>

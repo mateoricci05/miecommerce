@@ -1,39 +1,36 @@
-import { Router } from 'express';
-import ProductManager from '../utils/ProductManager.js';
+import express from 'express';
+import Product from '../services/product.service.js';
+const router = express.Router();
 
-const router = Router();
-const manager = new ProductManager();
-
+// GET /api/products?limit=&page=&sort=&query=
 router.get('/', async (req, res) => {
-  const products = await manager.getProducts();
-  res.json(products);
+  try {
+    const { limit, page, sort, query } = req.query;
+    const result = await Product.getProducts({ limit, page, sort, query, baseUrl: req.protocol + '://' + req.get('host') + req.originalUrl.split('?')[0] });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
 });
 
+// Additional endpoints for creating products (for testing)
 router.post('/', async (req, res) => {
-  const product = req.body;
-  const newProduct = await manager.addProduct(product);
-
-  // If request has access to io (app set), emit update
-  const io = req.app.get('io');
-  if (io) {
-    const products = await manager.getProducts();
-    io.emit('updateProducts', products);
+  try {
+    const created = await Product.createProduct(req.body);
+    res.status(201).json(created);
+  } catch (err) {
+    res.status(400).json({ status: 'error', message: err.message });
   }
-  res.status(201).json(newProduct);
 });
 
-router.delete('/:id', async (req, res) => {
-  const id = req.params.id;
-  const ok = await manager.deleteProduct(id);
-  if (ok) {
-    const io = req.app.get('io');
-    if (io) {
-      const products = await manager.getProducts();
-      io.emit('updateProducts', products);
-    }
-    return res.json({ deleted: true });
+router.get('/:pid', async (req, res) => {
+  try {
+    const prod = await Product.getById(req.params.pid);
+    if(!prod) return res.status(404).json({ status:'error', message:'Product not found' });
+    res.json({ status: 'success', payload: prod });
+  } catch(err) {
+    res.status(500).json({ status:'error', message: err.message });
   }
-  res.status(404).json({ error: 'Product not found' });
 });
 
 export default router;
